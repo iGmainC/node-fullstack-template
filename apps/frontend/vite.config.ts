@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
 import honoDevProxyPlugin from '../../package/vite-plugin-hono-dev'
 
 export default defineConfig({
@@ -15,6 +16,7 @@ export default defineConfig({
       host: 'localhost',
       port: 8787,
     }),
+    tailwindcss(),
     react({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
