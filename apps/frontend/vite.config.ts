@@ -4,6 +4,10 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import honoDevProxyPlugin from '../../package/vite-plugin-hono-dev'
 
 export default defineConfig({
+  build: {
+    outDir: '../../dist/frontend',
+    emptyOutDir: false,
+  },
   plugins: [
     tsconfigPaths(),
     honoDevProxyPlugin({

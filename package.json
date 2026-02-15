@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "dev": "bun run --filter @workspace/frontend dev",
-    "build": "bun run --filter @workspace/frontend build",
+    "clean": "rm -rf dist",
+    "build": "bun run clean && bun run --filter @workspace/backend build && bun run --filter @workspace/frontend build",
     "typecheck": "bun run --filter @workspace/backend typecheck && bun run --filter @workspace/frontend typecheck",
     "lint": "eslint .",
     "preview": "bun run --filter @workspace/frontend preview"
