@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import honoDevProxyPlugin from './package/vite-plugin-hono-dev'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import honoDevProxyPlugin from '../../package/vite-plugin-hono-dev'
 
 export default defineConfig({
   plugins: [
+    tsconfigPaths(),
     honoDevProxyPlugin({
-      entry: 'apps/backend/src/server.ts',
+      entry: '../backend/src/server.ts',
       host: 'localhost',
       port: 8787,
     }),

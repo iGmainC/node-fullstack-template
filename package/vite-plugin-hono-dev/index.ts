@@ -40,7 +40,7 @@ type HonoLikeApp = {
   }
 }
 
-const DEFAULT_HOST = '127.0.0.1'
+const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = 8787
 
 /** 判断值是否为非 null 对象 */

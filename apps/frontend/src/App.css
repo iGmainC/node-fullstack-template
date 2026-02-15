@@ -37,6 +37,22 @@
   padding: 2em;
 }
 
+.test-grid {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.api-result {
+  margin-top: 1rem;
+  text-align: left;
+  white-space: pre-wrap;
+  background: #1e1e1e;
+  color: #e6e6e6;
+  border-radius: 8px;
+  padding: 0.8rem;
+}
+
 .read-the-docs {
   color: #888;
 }
