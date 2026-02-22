@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { createFileRoute } from '@tanstack/react-router'
+import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
+export const Route = createFileRoute('/')({
+  component: IndexPage,
+})
+
+function IndexPage() {
   const [count, setCount] = useState(0)
   const [apiResult, setApiResult] = useState('')
   const [loadingKey, setLoadingKey] = useState<string | null>(null)
@@ -44,7 +49,7 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Edit <code>src/routes/index.tsx</code> and save to test HMR
         </p>
         <div className="test-grid">
           <button onClick={() => runApiTest('GET /api/test', '/api/test')} disabled={!!loadingKey}>
@@ -111,5 +116,3 @@ function App() {
     </>
   )
 }
-
-export default App
