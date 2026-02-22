@@ -1,6 +1,7 @@
 import { Hono } from "hono";
+import { serve } from "@hono/node-server";
 
-const app = new Hono();
+export const app = new Hono();
 
 app.get("/api/test", (c) => c.text("ok"));
 
@@ -81,4 +82,11 @@ app.get("/api/slow", async (c) => {
   });
 });
 
-export default app;
+if (import.meta.main) {
+  const port = Number(process.env.PORT ?? "3000");
+  serve({
+    fetch: app.fetch,
+    port,
+  });
+  console.log(`[backend] listening on http://localhost:${port}`);
+}

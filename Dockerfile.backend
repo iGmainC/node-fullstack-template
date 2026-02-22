@@ -1,0 +1,19 @@
+FROM docker.1ms.run/oven/bun:1 AS builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN bun install --frozen-lockfile
+RUN bun run --filter @workspace/backend build
+
+FROM docker.1ms.run/oven/bun:1-slim AS runtime
+
+WORKDIR /app
+
+COPY --from=builder /app/dist/backend/server.js ./server.js
+
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["bun", "server.js"]
