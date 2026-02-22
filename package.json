@@ -7,7 +7,7 @@
 		"apps/*"
 	],
 	"scripts": {
-		"dev": "bun run --filter @workspace/frontend dev",
+		"dev": "bun --env-file=.env run --elide-lines=0 --filter @workspace/frontend dev",
 		"clean": "rm -rf dist",
 		"build": "bun run clean && bun run --filter @workspace/backend build && bun run --filter @workspace/frontend build",
 		"typecheck": "bun run --filter @workspace/backend typecheck && bun run --filter @workspace/frontend typecheck",
@@ -40,6 +40,7 @@
 		"@tanstack/react-router-devtools": "^1.162.1",
 		"@trpc/client": "^11.10.0",
 		"@trpc/server": "^11.10.0",
+		"better-auth": "^1.4.18",
 		"dotenv": "^17.3.1",
 		"install": "^0.13.0",
 		"pg": "^8.18.0",

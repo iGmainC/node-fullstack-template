@@ -183,9 +183,9 @@ const proxyToBackend = (
     headers: {
       ...req.headers,
       host: targetUrl.host,
+      origin: targetOrigin,
     },
   };
-
   const proxyRequest = (isSecure ? https : http).request(
     requestOptions,
     (proxyResponse) => {
