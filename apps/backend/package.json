@@ -1,13 +1,13 @@
 {
-  "name": "@workspace/backend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "build": "bun build ./src/server.ts --target node --format esm --outdir ../../dist/backend",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "hono": "^4.11.9"
-  }
+	"name": "@workspace/backend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "bun build ./src/server.ts --target node --format esm --outdir ../../dist/backend",
+		"typecheck": "tsc -p tsconfig.json --noEmit"
+	},
+	"dependencies": {
+		"hono": "^4.11.9"
+	}
 }
