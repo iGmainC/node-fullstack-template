@@ -32,13 +32,18 @@
 		"typescript-eslint": "^8.48.0"
 	},
 	"dependencies": {
+		"@hono/trpc-server": "^0.4.2",
 		"@prisma/adapter-pg": "^7.4.1",
 		"@prisma/client": "^7.4.1",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tanstack/react-router": "^1.162.1",
 		"@tanstack/react-router-devtools": "^1.162.1",
+		"@trpc/client": "^11.10.0",
+		"@trpc/server": "^11.10.0",
 		"dotenv": "^17.3.1",
+		"install": "^0.13.0",
 		"pg": "^8.18.0",
-		"tailwindcss": "^4.1.18"
+		"tailwindcss": "^4.1.18",
+		"zod": "^4.3.6"
 	}
 }

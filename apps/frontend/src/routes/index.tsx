@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
+import { client } from "../lib/trpc-client";
 import "./App.css";
 
 export const Route = createFileRoute("/")({
@@ -25,6 +26,20 @@ function IndexPage() {
         body = await response.text();
       }
       setApiResult(`[${label}] status: ${response.status}\n${body}`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setApiResult(`[${label}] request failed: ${message}`);
+    } finally {
+      setLoadingKey(null);
+    }
+  };
+
+  const runTrpcTest = async () => {
+    const label = "tRPC hello";
+    setLoadingKey(label);
+    try {
+      const data = await client.hello.query("Frontend");
+      setApiResult(`[${label}] success\n${JSON.stringify({ data }, null, 2)}`);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       setApiResult(`[${label}] request failed: ${message}`);
@@ -127,6 +142,9 @@ function IndexPage() {
             disabled={!!loadingKey}
           >
             {loadingKey === "GET /api/slow" ? "Testing..." : "GET /api/slow"}
+          </button>
+          <button onClick={runTrpcTest} disabled={!!loadingKey}>
+            {loadingKey === "tRPC hello" ? "Testing..." : "tRPC hello"}
           </button>
         </div>
         {apiResult && <pre className="api-result">{apiResult}</pre>}
