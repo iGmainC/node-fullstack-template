@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
 import { client } from "../lib/trpc-client";
+import { useTranslation } from "react-i18next";
 import "./App.css";
 
 export const Route = createFileRoute("/")({
@@ -10,9 +11,9 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexPage() {
-  const [count, setCount] = useState(0);
   const [apiResult, setApiResult] = useState("");
   const [loadingKey, setLoadingKey] = useState<string | null>(null);
+  const { t, i18n } = useTranslation();
 
   const runApiTest = async (label: string, url: string, init?: RequestInit) => {
     setLoadingKey(label);
@@ -58,10 +59,14 @@ function IndexPage() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1 className="text-4xl!">{t("Welcome to React")}</h1>
+      <p>当前语言: {i18n.language}</p>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={() => {
+          const newLang = i18n.language === "en" ? "zh" : "en";
+          i18n.changeLanguage(newLang);
+        }}>
+          {i18n.language === "en" ? "切换到中文" : "Switch to English"}
         </button>
         <p>
           Edit <code>src/routes/index.tsx</code> and save to test HMR
