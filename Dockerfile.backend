@@ -5,6 +5,8 @@ WORKDIR /app
 COPY . .
 
 RUN bun install --frozen-lockfile
+ENV DATABASE_URL="postgresql://app:app@localhost:5432/app?schema=public"
+RUN bunx prisma generate
 RUN bun run --filter @workspace/backend build
 
 FROM docker.1ms.run/oven/bun:1-slim AS runtime
