@@ -5,7 +5,11 @@
 		"target": "ES2023",
 		"lib": ["ES2023"],
 		"module": "ESNext",
-		"types": ["node"]
+		"types": ["node"],
+		"baseUrl": ".",
+		"paths": {
+			"vite": ["./node_modules/vite"]
+		}
 	},
 	"include": ["vite.config.ts", "../../package/vite-plugin-hono-dev/index.ts"]
 }

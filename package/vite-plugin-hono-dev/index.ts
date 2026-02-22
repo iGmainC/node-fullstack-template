@@ -10,7 +10,13 @@ import { createAdaptorServer, type ServerType } from "@hono/node-server";
 import { METHOD_NAME_ALL, type Result } from "hono/router";
 import type { RouterRoute } from "hono/types";
 import { getPath } from "hono/utils/url";
-import { normalizePath, type Plugin, type ViteDevServer } from "vite";
+import {
+  normalizePath,
+  type HotUpdateOptions,
+  type Plugin,
+  type ResolvedConfig,
+  type ViteDevServer,
+} from "vite";
 
 /**
  * 插件入参：
@@ -46,6 +52,7 @@ type HonoLikeApp = {
 
 const DEFAULT_HOST = "localhost";
 const DEFAULT_PORT = 8787;
+type MiddlewareNext = (error?: unknown) => void;
 
 /** 判断值是否为非 null 对象 */
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -330,7 +337,7 @@ export default function honoDevProxyPlugin(
   return {
     name: "hono-dev-proxy-plugin",
     apply: "serve",
-    configResolved(config) {
+    configResolved(config: ResolvedConfig) {
       // 以 Vite root 为基准解析入口，避免 cwd 差异
       entryPath = path.resolve(config.root, options.entry);
       normalizedEntryPath = normalizePath(entryPath);
@@ -340,7 +347,7 @@ export default function honoDevProxyPlugin(
         : `${backendBaseDir}/`;
       backendTarget = `http://${backendHost}:${backendPort}`;
     },
-    hotUpdate(options) {
+    hotUpdate(options: HotUpdateOptions) {
       if (!isBackendRelatedFile(options.file)) return;
 
       // client/ssr 两个环境会各触发一次，这里按 timestamp+file+type 去重
@@ -403,25 +410,27 @@ export default function honoDevProxyPlugin(
       // 挂载到 Vite 中间件链：
       // - 路由命中 => 代理到后端
       // - 路由未命中 => next()，继续走 Vite 默认开发流程（静态资源/HMR/SPA fallback）
-      server.middlewares.use((req, res, next) => {
-        if (!loadedApp) {
-          next();
-          return;
-        }
+      server.middlewares.use(
+        (req: IncomingMessage, res: ServerResponse, next: MiddlewareNext) => {
+          if (!loadedApp) {
+            next();
+            return;
+          }
 
-        const method = req.method?.toUpperCase() ?? "GET";
-        const pathName = getRequestPathname(req);
-        if (!shouldProxyRequest(loadedApp, appRoutes, method, pathName)) {
-          next();
-          return;
-        }
+          const method = req.method?.toUpperCase() ?? "GET";
+          const pathName = getRequestPathname(req);
+          if (!shouldProxyRequest(loadedApp, appRoutes, method, pathName)) {
+            next();
+            return;
+          }
 
-        proxyToBackend(req, res, backendTarget, (error) => {
-          server.config.logger.error(
-            `[hono-dev-proxy] proxy error: ${error.message}`,
-          );
-        });
-      });
+          proxyToBackend(req, res, backendTarget, (error) => {
+            server.config.logger.error(
+              `[hono-dev-proxy] proxy error: ${error.message}`,
+            );
+          });
+        },
+      );
 
       // Vite 关闭时回收后端服务，避免端口泄漏
       const closeBackendServer = () => {
