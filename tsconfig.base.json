@@ -18,8 +18,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@packages/*": ["packages/*"],
-			"@frontend/*": ["apps/frontend/src/*"],
-			"@backend/*": ["apps/backend/src/*"]
+			"@frontend/*": ["apps/frontend/*"],
+			"@backend/*": ["apps/backend/*"]
 		}
 	}
 }

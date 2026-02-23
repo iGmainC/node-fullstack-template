@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import honoDevProxyPlugin from "./packages/vite-plugin-hono-dev";
@@ -11,7 +11,13 @@ export default defineConfig({
     emptyOutDir: false,
   },
   plugins: [
-    tsconfigPaths(),
+    tsconfigPaths({
+      configNames: [
+        "tsconfig.json",
+        "tsconfig.base.json",
+        "tsconfig.app.json",
+      ],
+    }),
     honoDevProxyPlugin({
       entry: "apps/backend/server.ts",
       host: "localhost",

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
 import { client } from "../lib/trpc-client";
 import { useTranslation } from "react-i18next";
-import "./App.css";
+import { Button } from "@packages/components/ui/button";
 
 export const Route = createFileRoute("/")({
   component: IndexPage,
@@ -14,6 +14,44 @@ function IndexPage() {
   const [apiResult, setApiResult] = useState("");
   const [loadingKey, setLoadingKey] = useState<string | null>(null);
   const { t, i18n } = useTranslation();
+  const apiCases = [
+    { label: "GET /api/test", run: () => runApiTest("GET /api/test", "/api/test") },
+    {
+      label: "GET /api/users/42?expand=profile",
+      run: () => runApiTest("GET /api/users/:id", "/api/users/42?expand=profile"),
+    },
+    {
+      label: "GET /api/search?q=vite&page=2",
+      run: () => runApiTest("GET /api/search", "/api/search?q=vite&page=2"),
+    },
+    {
+      label: "POST /api/echo",
+      run: () =>
+        runApiTest("POST /api/echo", "/api/echo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "hello", from: "frontend" }),
+        }),
+    },
+    {
+      label: "PUT /api/items/7",
+      run: () =>
+        runApiTest("PUT /api/items/:id", "/api/items/7", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "item-7", enabled: true }),
+        }),
+    },
+    {
+      label: "DELETE /api/items/7",
+      run: () =>
+        runApiTest("DELETE /api/items/:id", "/api/items/7", {
+          method: "DELETE",
+        }),
+    },
+    { label: "GET /api/error", run: () => runApiTest("GET /api/error", "/api/error") },
+    { label: "GET /api/slow", run: () => runApiTest("GET /api/slow", "/api/slow") },
+  ];
 
   const runApiTest = async (label: string, url: string, init?: RequestInit) => {
     setLoadingKey(label);
@@ -50,113 +88,77 @@ function IndexPage() {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-center gap-4">
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background via-background to-muted/30">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-8 h-72 w-72 rounded-full bg-orange-400/10 blur-3xl" />
+        <div className="absolute -right-24 top-24 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
       </div>
-      <h1 className="text-4xl!">{t("Welcome to React")}</h1>
-      <p>当前语言: {i18n.language}</p>
-      <div className="card">
-        <button onClick={() => {
-          const newLang = i18n.language === "en" ? "zh" : "en";
-          i18n.changeLanguage(newLang);
-        }}>
-          {i18n.language === "en" ? "切换到中文" : "Switch to English"}
-        </button>
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to test HMR
-        </p>
-        <div className="test-grid">
-          <button
-            onClick={() => runApiTest("GET /api/test", "/api/test")}
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "GET /api/test" ? "Testing..." : "GET /api/test"}
-          </button>
-          <button
-            onClick={() =>
-              runApiTest("GET /api/users/:id", "/api/users/42?expand=profile")
-            }
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "GET /api/users/:id"
-              ? "Testing..."
-              : "GET /api/users/42?expand=profile"}
-          </button>
-          <button
-            onClick={() =>
-              runApiTest("GET /api/search", "/api/search?q=vite&page=2")
-            }
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "GET /api/search"
-              ? "Testing..."
-              : "GET /api/search?q=vite&page=2"}
-          </button>
-          <button
-            onClick={() =>
-              runApiTest("POST /api/echo", "/api/echo", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: "hello", from: "frontend" }),
-              })
-            }
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "POST /api/echo" ? "Testing..." : "POST /api/echo"}
-          </button>
-          <button
-            onClick={() =>
-              runApiTest("PUT /api/items/:id", "/api/items/7", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: "item-7", enabled: true }),
-              })
-            }
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "PUT /api/items/:id"
-              ? "Testing..."
-              : "PUT /api/items/7"}
-          </button>
-          <button
-            onClick={() =>
-              runApiTest("DELETE /api/items/:id", "/api/items/7", {
-                method: "DELETE",
-              })
-            }
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "DELETE /api/items/:id"
-              ? "Testing..."
-              : "DELETE /api/items/7"}
-          </button>
-          <button
-            onClick={() => runApiTest("GET /api/error", "/api/error")}
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "GET /api/error" ? "Testing..." : "GET /api/error"}
-          </button>
-          <button
-            onClick={() => runApiTest("GET /api/slow", "/api/slow")}
-            disabled={!!loadingKey}
-          >
-            {loadingKey === "GET /api/slow" ? "Testing..." : "GET /api/slow"}
-          </button>
-          <button onClick={runTrpcTest} disabled={!!loadingKey}>
-            {loadingKey === "tRPC hello" ? "Testing..." : "tRPC hello"}
-          </button>
-        </div>
-        {apiResult && <pre className="api-result">{apiResult}</pre>}
+
+      <div className="relative mx-auto grid w-full max-w-6xl gap-6 px-4 py-8 sm:px-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <section className="rounded-2xl border bg-card/90 p-6 shadow-sm backdrop-blur">
+          <div className="mb-6 flex items-center gap-4">
+            <a href="https://vite.dev" target="_blank" rel="noreferrer">
+              <img src={viteLogo} className="logo" alt="Vite logo" />
+            </a>
+            <a href="https://react.dev" target="_blank" rel="noreferrer">
+              <img src={reactLogo} className="logo react" alt="React logo" />
+            </a>
+          </div>
+          <h1 className="text-3xl font-semibold tracking-tight">{t("Welcome to React")}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            全栈模板调试面板，已接入 Vite + React + Hono + tRPC。
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">当前语言: {i18n.language}</p>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <Button
+              onClick={() => {
+                const newLang = i18n.language === "en" ? "zh" : "en";
+                i18n.changeLanguage(newLang);
+              }}
+            >
+              {i18n.language === "en" ? "切换到中文" : "Switch to English"}
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/auth">打开认证页</Link>
+            </Button>
+          </div>
+
+          <p className="mt-6 text-xs text-muted-foreground">
+            Edit <code>apps/frontend/routes/index.tsx</code> and save to test HMR
+          </p>
+        </section>
+
+        <section className="rounded-2xl border bg-card/90 p-6 shadow-sm backdrop-blur">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-medium">API Playground</h2>
+            <Button onClick={runTrpcTest} disabled={!!loadingKey} variant="secondary">
+              {loadingKey === "tRPC hello" ? "Testing..." : "tRPC hello"}
+            </Button>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {apiCases.map((item) => (
+              <Button
+                key={item.label}
+                onClick={item.run}
+                disabled={!!loadingKey}
+                variant="outline"
+                className="justify-start"
+              >
+                {loadingKey ? "Testing..." : item.label}
+              </Button>
+            ))}
+          </div>
+
+          <div className="mt-4">
+            <h3 className="mb-2 text-sm font-medium text-muted-foreground">响应结果</h3>
+            <pre className="min-h-56 overflow-auto rounded-lg border bg-muted/40 p-3 text-xs">
+              {apiResult || "点击上方接口按钮开始测试..."}
+            </pre>
+          </div>
+        </section>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </main>
   );
 }

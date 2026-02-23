@@ -8,5 +8,5 @@
 		"types": ["vite/client"],
 		"jsx": "react-jsx"
 	},
-	"include": ["apps/frontend"]
+	"include": ["apps/frontend", "packages/components", "packages/lib"]
 }
