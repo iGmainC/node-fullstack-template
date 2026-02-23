@@ -17,7 +17,7 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": ".",
 		"paths": {
-			"@package/*": ["package/*"],
+			"@packages/*": ["packages/*"],
 			"@frontend/*": ["apps/frontend/src/*"],
 			"@backend/*": ["apps/backend/src/*"]
 		}

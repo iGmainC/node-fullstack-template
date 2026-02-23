@@ -21,7 +21,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["apps/backend/**/*.ts", "package/**/*.ts", "*.config.{js,ts}"],
+    files: ["apps/backend/**/*.ts", "packages/**/*.ts", "*.config.{js,ts}"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
       ecmaVersion: 2020,

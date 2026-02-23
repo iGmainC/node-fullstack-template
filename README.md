@@ -6,7 +6,7 @@
 apps/
   frontend/   # React + Vite
   backend/    # Hono app
-package/      # shared logic / dev plugins
+packages/      # shared logic / dev plugins
 ```
 
 ## Scripts
