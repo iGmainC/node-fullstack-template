@@ -7,9 +7,9 @@
 		"apps/*"
 	],
 	"scripts": {
-		"dev": "bun --env-file=.env run --elide-lines=0 --filter @workspace/frontend dev",
+		"dev": "bun --env-file=.env vite --config vite.config.ts",
 		"clean": "rm -rf dist",
-		"build": "bun run clean && bun run --filter @workspace/backend build && bun run --filter @workspace/frontend build",
+		"build": "bun vite build && bun build ./apps/backend/server.ts --target node --format esm --outfile ./dist/backend/server.js",
 		"typecheck": "bun run --filter @workspace/backend typecheck && bun run --filter @workspace/frontend typecheck",
 		"format": "biome format --write .",
 		"lint": "eslint .",
@@ -57,6 +57,8 @@
 		"install": "^0.13.0",
 		"lucide-react": "^0.575.0",
 		"pg": "^8.18.0",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
 		"react-i18next": "^16.5.4",
 		"shadcn": "^3.8.5",
 		"tailwind-merge": "^3.5.0",

@@ -1,17 +1,6 @@
-FROM docker.1ms.run/oven/bun:1 AS builder
-
-WORKDIR /app
-
-COPY . .
-
-RUN bun install --frozen-lockfile
-ENV DATABASE_URL="postgresql://app:app@localhost:5432/app?schema=public"
-RUN bunx prisma generate
-RUN bun run --filter @workspace/frontend build
-
 FROM docker.1ms.run/caddy:2-alpine AS runtime
 
+COPY dist/frontend /usr/share/caddy
 COPY Caddyfile.frontend /etc/caddy/Caddyfile
-COPY --from=builder /app/dist/frontend /usr/share/caddy
 
-EXPOSE 80
+EXPOSE 80 443
