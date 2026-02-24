@@ -3,8 +3,11 @@ import { serve } from "@hono/node-server";
 import { trpcServer } from "@hono/trpc-server";
 import { trpcRouter } from "./trpc";
 import { auth } from "./lib/auth";
+import { logger } from "hono/logger";
 
 export const app = new Hono();
+
+app.use(logger())
 
 app.use(
   "/api/trpc/*",

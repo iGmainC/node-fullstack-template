@@ -9,6 +9,7 @@ import type {
 import { createAdaptorServer, type ServerType } from "@hono/node-server";
 import { METHOD_NAME_ALL, type Result } from "hono/router";
 import type { RouterRoute } from "hono/types";
+import { isMiddleware } from "hono/utils/handler";
 import { getPath } from "hono/utils/url";
 import {
   normalizePath,
@@ -118,6 +119,9 @@ const getRequestPathname = (req: IncomingMessage): string => {
 
 const getRouteKey = (route: Pick<RouterRoute, "method" | "path">): string =>
   `${route.method.toUpperCase()} ${route.path}`;
+
+const isProxyableRoute = (route: RouterRoute): boolean =>
+  !isMiddleware(route.handler as Function);
 
 /**
  * 判断当前 router.match 的结果中，是否包含“真正来自 app.routes 的命中路由”。
@@ -281,20 +285,26 @@ export default function honoDevProxyPlugin(
       const moduleExports = await server.ssrLoadModule(entryPath);
       const nextApp = extractHonoApp(moduleExports, options.entry);
       loadedApp = nextApp;
-      appRoutes = new Set(nextApp.routes.map(getRouteKey));
+      const proxyableRoutes = nextApp.routes.filter(isProxyableRoute);
+      appRoutes = new Set(proxyableRoutes.map(getRouteKey));
 
       const routeSummary = nextApp.routes
         .map((route) => `${route.method} ${route.path}`)
         .join(", ");
+      const proxyableRouteSummary = proxyableRoutes
+        .map((route) => `${route.method} ${route.path}`)
+        .join(", ");
       if (reason === "initial") {
         server.config.logger.info(
-          `[hono-dev-proxy] loaded ${nextApp.routes.length} route(s): ${routeSummary || "none"}`,
+          `[hono-dev-proxy] loaded ${nextApp.routes.length} route(s), proxyable ${proxyableRoutes.length} route(s). all: ${
+            routeSummary || "none"
+          }. proxyable: ${proxyableRouteSummary || "none"}`,
         );
       } else {
         server.config.logger.info(
-          `[hono-dev-proxy] backend reloaded (${reason}), ${nextApp.routes.length} route(s): ${
+          `[hono-dev-proxy] backend reloaded (${reason}), ${nextApp.routes.length} route(s), proxyable ${proxyableRoutes.length} route(s). all: ${
             routeSummary || "none"
-          }`,
+          }. proxyable: ${proxyableRouteSummary || "none"}`,
         );
       }
       return true;
