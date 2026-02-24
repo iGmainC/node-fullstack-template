@@ -14,6 +14,7 @@
         "@tanstack/react-router-devtools": "^1.162.1",
         "@trpc/client": "^11.10.0",
         "@trpc/server": "^11.10.0",
+        "@types/react-dom": "^19.2.3",
         "better-auth": "^1.4.18",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -582,6 +583,8 @@
     "@types/pg": ["@types/pg@8.16.0", "", { "dependencies": { "@types/node": "*", "pg-protocol": "*", "pg-types": "^2.2.0" } }, "sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ=="],
 
     "@types/react": ["@types/react@19.2.14", "https://mirrors.tencent.com/npm/@types/react/-/react-19.2.14.tgz", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w=="],
+
+    "@types/react-dom": ["@types/react-dom@19.2.3", "https://mirrors.tencent.com/npm/@types/react-dom/-/react-dom-19.2.3.tgz", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ=="],
 
     "@types/statuses": ["@types/statuses@2.0.6", "https://mirrors.tencent.com/npm/@types/statuses/-/statuses-2.0.6.tgz", {}, "sha512-xMAgYwceFhRA2zY+XbEA7mxYbA093wdiW8Vu6gZPGWy9cmOyU9XesH1tNcEWsKFd5Vzrqx5T3D38PWx1FIIXkA=="],
 
