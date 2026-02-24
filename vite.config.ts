@@ -12,11 +12,7 @@ export default defineConfig({
   },
   plugins: [
     tsconfigPaths({
-      configNames: [
-        "tsconfig.json",
-        "tsconfig.base.json",
-        "tsconfig.app.json",
-      ],
+      configNames: ["tsconfig.json", "tsconfig.base.json", "tsconfig.app.json"],
     }),
     honoDevProxyPlugin({
       entry: "apps/backend/server.ts",
@@ -28,6 +24,7 @@ export default defineConfig({
       target: "react",
       autoCodeSplitting: true,
       quoteStyle: "double",
+      semicolons: true,
       routesDirectory: "apps/frontend/routes",
       generatedRouteTree: "apps/frontend/routeTree.gen.ts",
     }),

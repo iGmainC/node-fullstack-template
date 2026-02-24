@@ -7,18 +7,19 @@
 	},
 	"files": {
 		"includes": [
-			"apps/*/src/**",
-			"apps/*/*.json",
-			"apps/*/*.ts",
-			"apps/*/*.tsx",
+			"apps/**/*.json",
+			"apps/**/*.ts",
+			"apps/**/*.tsx",
 			"packages/**/*.ts",
 			"packages/**/*.tsx",
 			"*.json",
 			"*.js",
 			"*.ts",
+			"*.md",
 			"!!**/node_modules",
 			"!!**/dist",
-			"!!**/.tanstack"
+			"!!**/.tanstack",
+			"!!apps/frontend/routeTree.gen.ts"
 		]
 	},
 	"formatter": {

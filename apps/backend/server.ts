@@ -1,17 +1,17 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { trpcServer } from '@hono/trpc-server' 
+import { trpcServer } from "@hono/trpc-server";
 import { trpcRouter } from "./trpc";
 import { auth } from "./lib/auth";
 
 export const app = new Hono();
 
 app.use(
-  '/api/trpc/*',
+  "/api/trpc/*",
   trpcServer({
     router: trpcRouter,
-  })
-)
+  }),
+);
 
 app.get("/api/test", (c) => c.text("ok"));
 

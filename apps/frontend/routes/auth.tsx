@@ -19,10 +19,7 @@ function AuthPage() {
   const [result, setResult] = useState("");
   const { data: session, isPending, error } = useSession();
 
-  const title = useMemo(
-    () => (mode === "sign-in" ? "登录" : "注册"),
-    [mode],
-  );
+  const title = useMemo(() => (mode === "sign-in" ? "登录" : "注册"), [mode]);
 
   const submit = async (event: SubmitEvent) => {
     event.preventDefault();
@@ -83,7 +80,9 @@ function AuthPage() {
               <Link to="/">返回首页</Link>
             </Button>
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">账户认证</h1>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                账户认证
+              </h1>
               <p className="text-sm text-muted-foreground">
                 使用 Better Auth 完成登录和注册流程测试。
               </p>

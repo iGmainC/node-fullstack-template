@@ -1,15 +1,15 @@
-import { initTRPC } from '@trpc/server'
-import { z } from 'zod'
+import { initTRPC } from "@trpc/server";
+import { z } from "zod";
 
-const t = initTRPC.create()
+const t = initTRPC.create();
 
-const publicProcedure = t.procedure
-const router = t.router
+const publicProcedure = t.procedure;
+const router = t.router;
 
 export const trpcRouter = router({
   hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
-    return `Hello ${input ?? 'World'}!`
+    return `Hello ${input ?? "World"}!`;
   }),
-})
+});
 
-export type AppRouter = typeof trpcRouter
+export type AppRouter = typeof trpcRouter;

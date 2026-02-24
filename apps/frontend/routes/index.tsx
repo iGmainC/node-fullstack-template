@@ -15,10 +15,14 @@ function IndexPage() {
   const [loadingKey, setLoadingKey] = useState<string | null>(null);
   const { t, i18n } = useTranslation();
   const apiCases = [
-    { label: "GET /api/test", run: () => runApiTest("GET /api/test", "/api/test") },
+    {
+      label: "GET /api/test",
+      run: () => runApiTest("GET /api/test", "/api/test"),
+    },
     {
       label: "GET /api/users/42?expand=profile",
-      run: () => runApiTest("GET /api/users/:id", "/api/users/42?expand=profile"),
+      run: () =>
+        runApiTest("GET /api/users/:id", "/api/users/42?expand=profile"),
     },
     {
       label: "GET /api/search?q=vite&page=2",
@@ -49,8 +53,14 @@ function IndexPage() {
           method: "DELETE",
         }),
     },
-    { label: "GET /api/error", run: () => runApiTest("GET /api/error", "/api/error") },
-    { label: "GET /api/slow", run: () => runApiTest("GET /api/slow", "/api/slow") },
+    {
+      label: "GET /api/error",
+      run: () => runApiTest("GET /api/error", "/api/error"),
+    },
+    {
+      label: "GET /api/slow",
+      run: () => runApiTest("GET /api/slow", "/api/slow"),
+    },
   ];
 
   const runApiTest = async (label: string, url: string, init?: RequestInit) => {
@@ -104,11 +114,15 @@ function IndexPage() {
               <img src={reactLogo} className="logo react" alt="React logo" />
             </a>
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight">{t("Welcome to React")}</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {t("Welcome to React")}
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             全栈模板调试面板，已接入 Vite + React + Hono + tRPC。
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">当前语言: {i18n.language}</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            当前语言: {i18n.language}
+          </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <Button
@@ -125,14 +139,19 @@ function IndexPage() {
           </div>
 
           <p className="mt-6 text-xs text-muted-foreground">
-            Edit <code>apps/frontend/routes/index.tsx</code> and save to test HMR
+            Edit <code>apps/frontend/routes/index.tsx</code> and save to test
+            HMR
           </p>
         </section>
 
         <section className="rounded-2xl border bg-card/90 p-6 shadow-sm backdrop-blur">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-medium">API Playground</h2>
-            <Button onClick={runTrpcTest} disabled={!!loadingKey} variant="secondary">
+            <Button
+              onClick={runTrpcTest}
+              disabled={!!loadingKey}
+              variant="secondary"
+            >
               {loadingKey === "tRPC hello" ? "Testing..." : "tRPC hello"}
             </Button>
           </div>
@@ -152,7 +171,9 @@ function IndexPage() {
           </div>
 
           <div className="mt-4">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">响应结果</h3>
+            <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+              响应结果
+            </h3>
             <pre className="min-h-56 overflow-auto rounded-lg border bg-muted/40 p-3 text-xs">
               {apiResult || "点击上方接口按钮开始测试..."}
             </pre>
