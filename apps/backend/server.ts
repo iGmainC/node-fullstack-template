@@ -4,10 +4,11 @@ import { trpcServer } from "@hono/trpc-server";
 import { trpcRouter } from "./trpc";
 import { auth } from "./lib/auth";
 import { logger } from "hono/logger";
+import { app as demoApp } from "./routes/demo";
 
 export const app = new Hono();
 
-app.use(logger())
+app.use(logger());
 
 app.use(
   "/api/trpc/*",
@@ -16,8 +17,9 @@ app.use(
   }),
 );
 
-
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
+
+app.route("/", demoApp);
 
 if (import.meta.main) {
   const port = Number(process.env.PORT ?? "3000");
