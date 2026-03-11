@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { signIn, signOut, signUp, useSession } from "../lib/auth";
 import { Button } from "@packages/components/ui/button";
 import { Input } from "@packages/components/ui/input";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
@@ -18,8 +19,12 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const { data: session, isPending, error } = useSession();
+  const { t } = useTranslation();
 
-  const title = useMemo(() => (mode === "sign-in" ? "登录" : "注册"), [mode]);
+  const title = useMemo(
+    () => (mode === "sign-in" ? t("Sign in") : t("Sign up")),
+    [mode, t],
+  );
 
   const submit = async (event: SubmitEvent) => {
     event.preventDefault();
@@ -34,8 +39,8 @@ function AuthPage() {
         });
         setResult(
           res.error
-            ? `[登录失败] ${res.error.message}`
-            : "[登录成功] 会话已建立",
+            ? `[${t("Sign in failed")}] ${res.error.message}`
+            : `[${t("Signed in successfully")}] ${t("Session established")}`,
         );
       } else {
         const res = await signUp.email({
@@ -45,13 +50,13 @@ function AuthPage() {
         });
         setResult(
           res.error
-            ? `[注册失败] ${res.error.message}`
-            : "[注册成功] 已自动登录",
+            ? `[${t("Sign up failed")}] ${res.error.message}`
+            : `[${t("Signed up successfully")}] ${t("Signed in automatically")}`,
         );
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setResult(`[请求失败] ${message}`);
+      setResult(`[${t("Request failed")}] ${message}`);
     } finally {
       setLoading(false);
     }
@@ -62,10 +67,14 @@ function AuthPage() {
     setResult("");
     try {
       const res = await signOut();
-      setResult(res.error ? `[退出失败] ${res.error.message}` : "[已退出]");
+      setResult(
+        res.error
+          ? `[${t("Sign out failed")}] ${res.error.message}`
+          : `[${t("Signed out")}]`,
+      );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setResult(`[请求失败] ${message}`);
+      setResult(`[${t("Request failed")}] ${message}`);
     } finally {
       setLoading(false);
     }
@@ -77,14 +86,14 @@ function AuthPage() {
         <section className="rounded-xl border bg-card p-6 shadow-sm">
           <div className="mb-8 space-y-3">
             <Button asChild variant="ghost" size="sm">
-              <Link to="/">返回首页</Link>
+              <Link to="/">{t("Back to home")}</Link>
             </Button>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight">
-                账户认证
+                {t("Account authentication")}
               </h1>
               <p className="text-sm text-muted-foreground">
-                使用 Better Auth 完成登录和注册流程测试。
+                {t("Use Better Auth to test sign-in and sign-up flows.")}
               </p>
             </div>
           </div>
@@ -97,7 +106,7 @@ function AuthPage() {
               disabled={loading}
               className="w-full"
             >
-              登录
+              {t("Sign in")}
             </Button>
             <Button
               type="button"
@@ -106,7 +115,7 @@ function AuthPage() {
               disabled={loading}
               className="w-full"
             >
-              注册
+              {t("Sign up")}
             </Button>
           </div>
 
@@ -114,9 +123,9 @@ function AuthPage() {
             <h2 className="text-lg font-medium">{title}</h2>
             {mode === "sign-up" && (
               <label className="grid gap-2">
-                <span className="text-sm text-muted-foreground">昵称</span>
+                <span className="text-sm text-muted-foreground">{t("Name")}</span>
                 <Input
-                  placeholder="请输入昵称"
+                  placeholder={t("Enter your name")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required={mode === "sign-up"}
@@ -124,7 +133,7 @@ function AuthPage() {
               </label>
             )}
             <label className="grid gap-2">
-              <span className="text-sm text-muted-foreground">邮箱</span>
+              <span className="text-sm text-muted-foreground">{t("Email")}</span>
               <Input
                 type="email"
                 placeholder="you@example.com"
@@ -134,10 +143,10 @@ function AuthPage() {
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm text-muted-foreground">密码</span>
+              <span className="text-sm text-muted-foreground">{t("Password")}</span>
               <Input
                 type="password"
-                placeholder="请输入密码"
+                placeholder={t("Enter your password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -145,7 +154,7 @@ function AuthPage() {
             </label>
             <div className="mt-2 flex flex-wrap gap-3">
               <Button type="submit" disabled={loading}>
-                {loading ? "提交中..." : title}
+                {loading ? t("Submitting...") : title}
               </Button>
               <Button
                 type="button"
@@ -153,7 +162,7 @@ function AuthPage() {
                 onClick={logout}
                 disabled={loading}
               >
-                退出登录
+                {t("Sign out")}
               </Button>
             </div>
           </form>
@@ -162,12 +171,12 @@ function AuthPage() {
         <section className="grid gap-4">
           <div className="rounded-xl border bg-card p-4 shadow-sm">
             <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-              当前会话
+              {t("Current session")}
             </h3>
-            {isPending && <p className="text-sm">加载中...</p>}
+            {isPending && <p className="text-sm">{t("Loading...")}</p>}
             {error && (
               <p className="rounded-md border border-destructive/40 bg-destructive/10 p-2 text-sm text-destructive">
-                session error: {error.message}
+                {t("Session error")}: {error.message}
               </p>
             )}
             {!isPending && !error && (
@@ -180,7 +189,7 @@ function AuthPage() {
           {result && (
             <div className="rounded-xl border bg-card p-4 shadow-sm">
               <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-                请求结果
+                {t("Request result")}
               </h3>
               <pre className="max-h-[260px] overflow-auto rounded-md border bg-muted/40 p-3 text-xs">
                 {result}

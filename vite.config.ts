@@ -3,7 +3,7 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
-import honoDevProxyPlugin from "./packages/vite-plugin-hono-dev";
+import honoDevProxyPlugin from "@igmainc/vite-plugin-hono-dev";
 
 export default defineConfig({
   build: {

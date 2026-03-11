@@ -14,6 +14,7 @@ function IndexPage() {
   const [apiResult, setApiResult] = useState("");
   const [loadingKey, setLoadingKey] = useState<string | null>(null);
   const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
   const apiCases = [
     {
       label: "GET /api/test",
@@ -118,29 +119,28 @@ function IndexPage() {
             {t("Welcome to React")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            全栈模板调试面板，已接入 Vite + React + Hono + tRPC。
+            {t("Fullstack template debug panel integrated with Vite + React + Hono + tRPC.")}
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
-            当前语言: {i18n.language}
+            {t("Current language")}: {i18n.language}
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <Button
               onClick={() => {
-                const newLang = i18n.language === "en" ? "zh" : "en";
+                const newLang = isEnglish ? "zh" : "en";
                 i18n.changeLanguage(newLang);
               }}
             >
-              {i18n.language === "en" ? "切换到中文" : "Switch to English"}
+              {isEnglish ? "切换到中文" : "Switch to English"}
             </Button>
             <Button asChild variant="outline">
-              <Link to="/auth">打开认证页</Link>
+              <Link to="/auth">{t("Open auth page")}</Link>
             </Button>
           </div>
 
           <p className="mt-6 text-xs text-muted-foreground">
-            Edit <code>apps/frontend/routes/index.tsx</code> and save to test
-            HMR
+            {t("Edit apps/frontend/routes/index.tsx and save to test HMR")}
           </p>
         </section>
 
@@ -152,7 +152,7 @@ function IndexPage() {
               disabled={!!loadingKey}
               variant="secondary"
             >
-              {loadingKey === "tRPC hello" ? "Testing..." : "tRPC hello"}
+              {loadingKey === "tRPC hello" ? t("Testing...") : "tRPC hello"}
             </Button>
           </div>
 
@@ -165,17 +165,17 @@ function IndexPage() {
                 variant="outline"
                 className="justify-start"
               >
-                {loadingKey ? "Testing..." : item.label}
+                {loadingKey ? t("Testing...") : item.label}
               </Button>
             ))}
           </div>
 
           <div className="mt-4">
             <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-              响应结果
+              {t("Response")}
             </h3>
             <pre className="min-h-56 overflow-auto rounded-lg border bg-muted/40 p-3 text-xs">
-              {apiResult || "点击上方接口按钮开始测试..."}
+              {apiResult || t("Click an API button above to start testing...")}
             </pre>
           </div>
         </section>

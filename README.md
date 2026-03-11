@@ -22,7 +22,6 @@ packages/
   components/               # shared UI components (shadcn)
   lib/                      # shared utils
   prisma/                   # Prisma generated types
-  vite-plugin-hono-dev/     # local dev proxy plugin
   env.ts                    # env schema
 ```
 
@@ -60,7 +59,7 @@ Shared by `tsconfig` and `vite`:
 
 ## Dev Flow
 
-`bun run dev` starts Vite and loads `packages/vite-plugin-hono-dev`:
+`bun run dev` starts Vite and loads `@igmainc/vite-plugin-hono-dev`:
 
 - Loads `apps/backend/server.ts`
 - Proxies requests by matching registered Hono routes
@@ -110,7 +109,6 @@ packages/
   components/               # 共享 UI 组件（shadcn）
   lib/                      # 共享工具函数
   prisma/                   # Prisma 生成类型
-  vite-plugin-hono-dev/     # 本地开发代理插件
   env.ts                    # 环境变量定义
 ```
 
@@ -148,7 +146,7 @@ bun run format
 
 ### 开发流程
 
-`bun run dev` 会启动 Vite，并加载 `packages/vite-plugin-hono-dev`：
+`bun run dev` 会启动 Vite，并加载 `@igmainc/vite-plugin-hono-dev`：
 
 - 加载 `apps/backend/server.ts`
 - 按 Hono 已注册路由进行请求代理
