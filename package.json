@@ -21,7 +21,7 @@
 		"@tanstack/router-plugin": "^1.166.7",
 		"@types/node": "^25.4.0",
 		"@types/pg": "^8.18.0",
-		"@vitejs/plugin-react": "^5.1.4",
+		"@vitejs/plugin-react": "^6.0.0",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^9.39.4",
 		"eslint-plugin-react-hooks": "^7.0.1",
