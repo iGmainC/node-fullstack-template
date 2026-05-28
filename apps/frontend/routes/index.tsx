@@ -98,6 +98,50 @@ function IndexPage() {
     }
   };
 
+  const runWebSocketTest = async () => {
+    const label = "WebSocket echo";
+    setLoadingKey(label);
+    try {
+      const result = await new Promise<string>((resolve, reject) => {
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const socket = new WebSocket(`${protocol}//${window.location.host}/api/ws`);
+        const payload = `ping:${Date.now()}`;
+        const messages: string[] = [];
+        const timeoutId = window.setTimeout(() => {
+          socket.close();
+          reject(new Error("WebSocket test timed out"));
+        }, 5000);
+
+        socket.addEventListener("open", () => {
+          // open 后发送唯一 payload，避免误把建连提示当成 echo 结果。
+          socket.send(payload);
+        });
+        socket.addEventListener("message", (event) => {
+          const message = String(event.data);
+          messages.push(message);
+          if (message === `echo:${payload}`) {
+            window.clearTimeout(timeoutId);
+            socket.close();
+            resolve(messages.join("\n"));
+          }
+        });
+        socket.addEventListener("error", () => {
+          window.clearTimeout(timeoutId);
+          reject(new Error("WebSocket connection failed"));
+        });
+        socket.addEventListener("close", () => {
+          window.clearTimeout(timeoutId);
+        });
+      });
+      setApiResult(`[${label}] success\n${result}`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setApiResult(`[${label}] request failed: ${message}`);
+    } finally {
+      setLoadingKey(null);
+    }
+  };
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background via-background to-muted/30">
       <div className="pointer-events-none absolute inset-0">
@@ -145,15 +189,24 @@ function IndexPage() {
         </section>
 
         <section className="rounded-2xl border bg-card/90 p-6 shadow-sm backdrop-blur">
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-medium">API Playground</h2>
-            <Button
-              onClick={runTrpcTest}
-              disabled={!!loadingKey}
-              variant="secondary"
-            >
-              {loadingKey === "tRPC hello" ? t("Testing...") : "tRPC hello"}
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={runTrpcTest}
+                disabled={!!loadingKey}
+                variant="secondary"
+              >
+                {loadingKey === "tRPC hello" ? t("Testing...") : "tRPC hello"}
+              </Button>
+              <Button
+                onClick={runWebSocketTest}
+                disabled={!!loadingKey}
+                variant="secondary"
+              >
+                {loadingKey === "WebSocket echo" ? t("Testing...") : "WebSocket echo"}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2">

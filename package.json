@@ -8,6 +8,7 @@
 	],
 	"scripts": {
 		"dev": "bun --env-file=.env vite --config vite.config.ts",
+		"dev:backend:bun": "bun --env-file=.env apps/backend/server.bun.ts",
 		"clean": "rm -rf dist",
 		"build": "bun vite build && bun build ./apps/backend/server.ts --target node --format esm --outfile ./dist/backend/server.js",
 		"format": "biome format --write .",
@@ -17,7 +18,7 @@
 		"@biomejs/biome": "2.4.4",
 		"@eslint/js": "^9.39.4",
 		"@hono/node-server": "^1.19.11",
-		"@igmainc/vite-plugin-hono-dev": "^0.1.2",
+		"@igmainc/vite-plugin-hono-dev": "^0.1.3",
 		"@tanstack/router-plugin": "^1.166.7",
 		"@types/node": "^25.4.0",
 		"@types/pg": "^8.18.0",
@@ -35,6 +36,7 @@
 		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"dependencies": {
+		"@hono/node-ws": "^1.3.1",
 		"@hono/trpc-server": "^0.4.2",
 		"@prisma/adapter-pg": "^7.4.2",
 		"@prisma/client": "^7.4.2",
