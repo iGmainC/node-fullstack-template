@@ -18,7 +18,7 @@
 		"@biomejs/biome": "2.4.4",
 		"@eslint/js": "^9.39.4",
 		"@hono/node-server": "^1.19.11",
-		"@igmainc/vite-plugin-hono-dev": "^0.1.3",
+		"@igmainc/vite-plugin-hono-dev": "^0.2.0",
 		"@tanstack/router-plugin": "^1.166.7",
 		"@types/node": "^25.4.0",
 		"@types/pg": "^8.18.0",
@@ -32,7 +32,7 @@
 		"prisma": "^7.4.2",
 		"typescript": "~5.9.3",
 		"typescript-eslint": "^8.57.0",
-		"vite": "^7.3.1",
+		"vite": "^8.0.14",
 		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"dependencies": {
