@@ -104,7 +104,9 @@ function IndexPage() {
     try {
       const result = await new Promise<string>((resolve, reject) => {
         const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-        const socket = new WebSocket(`${protocol}//${window.location.host}/api/ws`);
+        const socket = new WebSocket(
+          `${protocol}//${window.location.host}/api/ws`,
+        );
         const payload = `ping:${Date.now()}`;
         const messages: string[] = [];
         const timeoutId = window.setTimeout(() => {
@@ -163,7 +165,9 @@ function IndexPage() {
             {t("Welcome to React")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {t("Fullstack template debug panel integrated with Vite + React + Hono + tRPC.")}
+            {t(
+              "Fullstack template debug panel integrated with Vite + React + Hono + tRPC.",
+            )}
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
             {t("Current language")}: {i18n.language}
@@ -204,7 +208,9 @@ function IndexPage() {
                 disabled={!!loadingKey}
                 variant="secondary"
               >
-                {loadingKey === "WebSocket echo" ? t("Testing...") : "WebSocket echo"}
+                {loadingKey === "WebSocket echo"
+                  ? t("Testing...")
+                  : "WebSocket echo"}
               </Button>
             </div>
           </div>

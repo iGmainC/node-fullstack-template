@@ -2,25 +2,46 @@
 	"name": "node-fullstack-template",
 	"private": true,
 	"version": "0.0.0",
+	"description": "Production-minded Bun, Vite, React, Hono, tRPC and Prisma full-stack starter.",
 	"type": "module",
+	"packageManager": "bun@1.3.14",
+	"engines": {
+		"bun": ">=1.3.0",
+		"node": ">=22.14.0"
+	},
 	"workspaces": [
 		"apps/*"
 	],
 	"scripts": {
-		"dev": "bun --env-file=.env vite --config vite.config.ts",
+		"dev": "bun run dev:bun",
+		"dev:bun": "bun --env-file=.env ./node_modules/vite/bin/vite.js --config vite.config.ts",
+		"dev:node": "node --env-file=.env --import tsx ./node_modules/vite/bin/vite.js --config vite.config.ts",
 		"dev:backend:bun": "bun --env-file=.env apps/backend/server.bun.ts",
+		"dev:backend:node": "node --env-file=.env --import tsx apps/backend/server.ts",
+		"db:generate": "prisma generate",
+		"db:push": "prisma db push",
+		"db:studio": "prisma studio",
 		"clean": "rm -rf dist",
-		"build": "bun vite build && bun build ./apps/backend/server.ts --target node --format esm --outfile ./dist/backend/server.js",
+		"build": "bun run clean && bun run db:generate && bun run build:frontend && bun run build:backend",
+		"build:frontend": "vite build --config vite.config.ts",
+		"build:backend": "bun run build:backend:node && bun run build:backend:bun",
+		"build:backend:node": "bun build ./apps/backend/server.ts --target node --format esm --outfile ./dist/backend/server.node.js",
+		"build:backend:bun": "bun build ./apps/backend/server.bun.ts --target bun --format esm --outfile ./dist/backend/server.bun.js",
 		"format": "biome format --write .",
-		"lint": "eslint ."
+		"format:check": "biome format .",
+		"lint": "eslint .",
+		"typecheck": "bun run db:generate && tsc --build --pretty false",
+		"verify": "bun run format:check && bun run lint && bun run typecheck && bun run build"
 	},
 	"devDependencies": {
+		"@babel/core": "^8.0.1",
 		"@biomejs/biome": "2.4.4",
 		"@eslint/js": "^9.39.4",
 		"@hono/node-server": "^1.19.14",
-		"@igmainc/vite-plugin-hono-dev": "^0.2.0",
+		"@igmainc/vite-plugin-hono-dev": "^0.3.0",
 		"@rolldown/plugin-babel": "^0.2.3",
 		"@tanstack/router-plugin": "^1.168.11",
+		"@types/babel__core": "^7.20.5",
 		"@types/node": "^25.9.1",
 		"@types/pg": "^8.20.0",
 		"@vitejs/plugin-react": "^6.0.2",
@@ -33,6 +54,7 @@
 		"prisma": "^7.8.0",
 		"typescript": "~5.9.3",
 		"typescript-eslint": "^8.60.0",
+		"tsx": "^4.20.0",
 		"vite": "^8.0.14"
 	},
 	"dependencies": {
@@ -56,7 +78,6 @@
 		"i18next-chained-backend": "^5.0.4",
 		"i18next-http-backend": "^3.0.6",
 		"i18next-localstorage-backend": "^4.3.1",
-		"install": "^0.13.0",
 		"lucide-react": "^0.575.0",
 		"pg": "^8.21.0",
 		"radix-ui": "^1.4.3",

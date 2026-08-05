@@ -1,8 +1,13 @@
-import react from "@vitejs/plugin-react";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
 import honoDevProxyPlugin from "@igmainc/vite-plugin-hono-dev";
+import babel from "@rolldown/plugin-babel";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+// auto 会跟随 Vite 宿主；入口也必须使用同一运行时的 WebSocket adapter。
+const backendEntry =
+  "Bun" in globalThis ? "apps/backend/server.bun.ts" : "apps/backend/server.ts";
 
 export default defineConfig({
   build: {
@@ -14,9 +19,10 @@ export default defineConfig({
   },
   plugins: [
     honoDevProxyPlugin({
-      entry: "apps/backend/server.ts",
+      entry: backendEntry,
       host: "localhost",
       port: 8787,
+      runtime: "auto",
     }),
     tailwindcss(),
     tanstackRouter({
@@ -27,10 +33,8 @@ export default defineConfig({
       routesDirectory: "apps/frontend/routes",
       generatedRouteTree: "apps/frontend/routeTree.gen.ts",
     }),
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
+    react(),
+    // Vite 8 通过 Rolldown Babel preset 接入 React Compiler。
+    babel({ presets: [reactCompilerPreset()] }),
   ],
 });

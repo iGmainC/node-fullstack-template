@@ -2,10 +2,16 @@ import { upgradeWebSocket, websocket } from "hono/bun";
 import { createApp } from "./app";
 
 export const app = createApp(upgradeWebSocket);
+// 开发插件会读取该导出并把同一个 handler 传给其托管的 Bun.serve()。
+export { websocket };
 
 /** Bun 运行时提供的最小 serve 类型，避免把 Bun 类型泄漏到 Node 构建入口 */
 declare const Bun: {
-  serve(options: { fetch: typeof app.fetch; port: number; websocket: typeof websocket }): { url: URL };
+  serve(options: {
+    fetch: typeof app.fetch;
+    port: number;
+    websocket: typeof websocket;
+  }): { url: URL };
 };
 
 if (import.meta.main) {

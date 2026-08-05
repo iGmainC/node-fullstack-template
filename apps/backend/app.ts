@@ -12,7 +12,10 @@ import { app as demoApp } from "./routes/demo";
  * @param upgradeWebSocket 当前运行时提供的 WebSocket upgrade 适配器
  * @returns 已完成路由注册的 Hono 应用
  */
-export function configureApp(app: Hono, upgradeWebSocket: UpgradeWebSocket): Hono {
+export function configureApp(
+  app: Hono,
+  upgradeWebSocket: UpgradeWebSocket,
+): Hono {
   app.use(logger());
 
   app.use(

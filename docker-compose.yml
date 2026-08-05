@@ -15,21 +15,6 @@ services:
       timeout: 3s
       retries: 20
     restart: unless-stopped
-
-  redis:
-    image: docker.1ms.run/redis:8-alpine
-    command: ["redis-server", "--appendonly", "yes"]
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 20
-    restart: unless-stopped
-
   backend:
     build:
       context: .
@@ -37,14 +22,12 @@ services:
     environment:
       PORT: 3000
       DATABASE_URL: "postgresql://app:app@postgres:5432/app?schema=public"
-      REDIS_URL: "redis://redis:6379"
-      BETTER_AUTH_SECRET: "QFt4hErp3wxtrM08/8mmeZvniWJ2AJPpn0+FlotcNyY="
+      BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET}"
+      BETTER_AUTH_URL: "${BETTER_AUTH_URL:-http://localhost:8080}"
     ports:
       - "3000:3000"
     depends_on:
       postgres:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     restart: unless-stopped
 
@@ -60,4 +43,3 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:

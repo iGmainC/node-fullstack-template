@@ -4,7 +4,9 @@ import { createNodeWebSocket } from "@hono/node-ws";
 import { configureApp } from "./app";
 
 export const app = new Hono();
-export const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
+export const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({
+  app,
+});
 
 configureApp(app, upgradeWebSocket);
 

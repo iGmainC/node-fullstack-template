@@ -123,7 +123,9 @@ function AuthPage() {
             <h2 className="text-lg font-medium">{title}</h2>
             {mode === "sign-up" && (
               <label className="grid gap-2">
-                <span className="text-sm text-muted-foreground">{t("Name")}</span>
+                <span className="text-sm text-muted-foreground">
+                  {t("Name")}
+                </span>
                 <Input
                   placeholder={t("Enter your name")}
                   value={name}
@@ -133,7 +135,9 @@ function AuthPage() {
               </label>
             )}
             <label className="grid gap-2">
-              <span className="text-sm text-muted-foreground">{t("Email")}</span>
+              <span className="text-sm text-muted-foreground">
+                {t("Email")}
+              </span>
               <Input
                 type="email"
                 placeholder="you@example.com"
@@ -143,7 +147,9 @@ function AuthPage() {
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm text-muted-foreground">{t("Password")}</span>
+              <span className="text-sm text-muted-foreground">
+                {t("Password")}
+              </span>
               <Input
                 type="password"
                 placeholder={t("Enter your password")}
