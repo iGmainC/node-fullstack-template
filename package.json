@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"description": "Production-minded Bun, Vite, React, Hono, tRPC and Prisma full-stack starter.",
 	"type": "module",
-	"packageManager": "bun@1.3.14",
+	"packageManager": "bun@1.4.4",
 	"engines": {
 		"bun": ">=1.3.0",
 		"node": ">=22.14.0"
